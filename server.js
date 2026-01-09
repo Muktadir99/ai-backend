@@ -4,7 +4,9 @@ const cors = require("cors");
 const OpenAI = require("openai");
 
 const app = express();
-const PORT = 3000;
+
+// ✅ IMPORTANT: Render dynamic port
+const PORT = process.env.PORT || 3000;
 
 // multer memory storage (Render safe)
 const upload = multer({
@@ -37,7 +39,7 @@ app.post("/generate", upload.single("image"), async (req, res) => {
       apiKey: apiKey
     });
 
-    // prompt based on dropdown
+    // prompt
     const prompt = `Create a ${style} style image based on the uploaded photo`;
 
     // AI image generation
@@ -47,13 +49,13 @@ app.post("/generate", upload.single("image"), async (req, res) => {
       size: "1024x1024"
     });
 
-    // send image URL to frontend
+    // send image URL
     res.json({
       imageUrl: result.data[0].url
     });
 
   } catch (error) {
-    console.error(error);
+    console.error("AI ERROR:", error.message);
     res.status(500).json({
       message: "AI generation failed"
     });
