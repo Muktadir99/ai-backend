@@ -4,7 +4,6 @@ const cors = require("cors");
 
 const app = express();
 
-// IMPORTANT: memory storage
 const upload = multer({
   storage: multer.memoryStorage()
 });
@@ -21,12 +20,10 @@ app.post("/generate", upload.single("image"), (req, res) => {
   }
 
   res.json({
-    message: "File received successfully",
-    fileName: req.file.originalname,
-    size: req.file.size
+    message: "File received successfully"
   });
 });
 
 app.listen(3000, () => {
-  console.log("Server started");
+  console.log("Server started on port 3000");
 });
