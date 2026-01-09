@@ -1,14 +1,22 @@
 const express = require("express");
+const multer = require("multer");
+
 const app = express();
+const upload = multer({ dest: "uploads/" });
 
-app.use(express.json());
+app.post("/generate", upload.single("image"), (req, res) => {
+  if (!req.file) {
+    return res.json({ message: "No file received" });
+  }
 
-app.get("/", (req, res) => {
-  res.send("Server is running");
+  res.json({
+    message: "File received successfully",
+    filename: req.file.originalname
+  });
 });
 
-app.post("/generate", (req, res) => {
-  res.json({ message: "Hello from backend" });
+app.get("/", (req, res) => {
+  res.send("Server running");
 });
 
 app.listen(3000);
